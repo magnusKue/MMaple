@@ -18,7 +18,7 @@ class App:
         self.clock = pygame.time.Clock()
 
         self.window = Window([1500,800])
-        self.ui = UI(self.window.rootSize, self)
+        self.ui = UI(self.window.rootSize, self.project)
         
         
 
@@ -38,10 +38,10 @@ class App:
                     #self.ui.mapManager.set_window_resolution(event.size)
                     #self.ui.roomManager.set_window_resolution(event.size)
                     self.window.rootSize = event.size
-                    self.ui = UI(self.window.rootSize, self)	
+                    self.ui = UI(self.window.rootSize, self.project)	
 
                 self.ui.getManager().process_events(event)
-                self.ui.handleEvents(event, self)
+                self.ui.handleEvents(event, self.window.rootSize, self.project)
 
             self.ui.getManager().update(deltatime)
             self.window.root.fill(self.ui.getManager().ui_theme.get_colour('dark_bg'))

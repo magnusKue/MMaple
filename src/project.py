@@ -19,3 +19,10 @@ class Project:
         ]
 
         self.pointer = None
+    
+    def getBoundingbox(self):
+        bS = pygame.Vector2(int((self.gridsize.x / self.gridsize.y) * 100), 100)
+        return pygame.Vector2(
+            len(self.map[0]) * bS.x,
+            len(self.map) * bS.y
+        )

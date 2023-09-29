@@ -4,10 +4,10 @@ from definitions import *
 
 
 class UI:
-    def __init__(self, rootSize, app):
+    def __init__(self, rootSize, project):
         self.mode = MAPVIEW
 
-        self.mapView = uiMapView.MapView(rootSize)
+        self.mapView = uiMapView.MapView(rootSize, project)
         self.roomView = uiRoomView.RoomView(rootSize)
         
     def getManager(self):
@@ -25,5 +25,5 @@ class UI:
         elif self.mode == ROOMVIEW:
             self.roomView.manager.draw_ui(surface)
 
-    def handleEvents(self, event, app):
-        self.mapView.camera.handleEvents(event)
+    def handleEvents(self, event, rootSize, project):
+        self.mapView.camera.handleEvents(event, rootSize, project)
