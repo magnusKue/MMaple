@@ -46,7 +46,7 @@ class App:
             self.ui.getManager().update(deltatime)
             self.window.root.fill(self.ui.getManager().ui_theme.get_colour('dark_bg'))
 
-            self.ui.draw(self.window.root)
+            self.ui.draw(self.window.root, self.project)
             pygame.display.flip()
         pygame.quit()
         sys.exit()

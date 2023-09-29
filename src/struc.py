@@ -14,10 +14,10 @@ class Tilemanager:
 class Tilemap:
     def __init__(self, gridSize) -> None:
         map = [ # Tiles stored as IDs, accessed through the tile manager
-            "default","default","default",
-            "default","default","default",
-            "default","default","default",
-            "default","default","default"
+            ["default","default","default"],
+            ["default","default","default"],
+            ["default","default","default"],
+            ["default","default","default"]
         ]
 
 class ShapeRect:
@@ -34,24 +34,31 @@ class Collisionmanager: # stores all types of collisionshapes
 class Collisionmap:
     def __init__(self) -> None:
         map = [ # shapes stored as IDs, accessed through the collision manager
-            "full","full","full","full",
-            "full","full","full","full",
-            "full","full","full","full",
-            "full","full","full","full"
+            ["full","full","full","full"],
+            ["full","full","full","full"],
+            ["full","full","full","full"],
+            ["full","full","full","full"]
         ]
 
 class Room:
-    def __init__(self, project) -> None:
-        self.GRIDSIZE = project.gridsize
-
+    def __init__(self):
         self.doors = {
             UP : False, 
             DOWN : False,   
             LEFT : False,   
             RIGHT : False   
         }
+        
+        self.area = "none"
+
+
+class Block:
+    def __init__(self, project):
+        self.gridsize = project.gridsize
+
+        self.room = None
 
         self.layers = [
-            Tilemap(), 
+            Tilemap(self.gridsize), 
             Collisionmap()
         ]

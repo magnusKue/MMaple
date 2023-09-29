@@ -1,6 +1,5 @@
-import pygame, pygame_gui, random
-import uiRoomView
-import uiMapView 
+import pygame, pygame_gui
+import uiRoomView, uiMapView 
 from definitions import *
 
 
@@ -18,13 +17,13 @@ class UI:
         elif self.mode == ROOMVIEW:
             return self.roomView.manager
     
-    def draw(self, surface):
+    def draw(self, surface, project):
         if self.mode == MAPVIEW:
-            self.mapView.draw(surface)
+            self.mapView.draw(surface, project)
             self.mapView.manager.draw_ui(surface)
             
         elif self.mode == ROOMVIEW:
             self.roomView.manager.draw_ui(surface)
 
     def handleEvents(self, event, app):
-        pass
+        self.mapView.camera.handleEvents(event)
