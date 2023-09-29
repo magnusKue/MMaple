@@ -24,7 +24,7 @@ class App:
 
     def run(self):
         while self.running:
-            deltatime = self.clock.tick(60) / 1000
+            deltatime = self.clock.tick()
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -35,9 +35,10 @@ class App:
                         running = False
 
                 if event.type == pygame.VIDEORESIZE:
-                    #self.ui.mapManager.set_window_resolution(event.size)
-                    #self.ui.roomManager.set_window_resolution(event.size)
-                    self.window.rootSize = event.size
+                    width,height = event.size
+                    width = max(1000, width)
+                    height = max(800, height)
+                    self.window = Window([width, height])
                     self.ui = UI(self.window.rootSize, self.project)	
 
                 self.ui.getManager().process_events(event)
@@ -45,8 +46,8 @@ class App:
 
             self.ui.getManager().update(deltatime)
             self.window.root.fill(self.ui.getManager().ui_theme.get_colour('dark_bg'))
-
-            self.ui.draw(self.window.root, self.project)
+            print(self.clock.get_fps())
+            self.ui.draw(self.window.root, self.project, self.window.rootSize)
             pygame.display.flip()
         pygame.quit()
         sys.exit()

@@ -17,7 +17,7 @@ class UI:
         elif self.mode == ROOMVIEW:
             return self.roomView.manager
     
-    def draw(self, surface, project):
+    def draw(self, surface, project, rootSize):
         if self.mode == MAPVIEW:
             self.mapView.draw(surface, project)
             self.mapView.manager.draw_ui(surface)
