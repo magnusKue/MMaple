@@ -18,7 +18,7 @@ class Project:
         #    [None,   Block(self),     Block(self),      None,None,Block(self)]
         #]
             [None, None, None, None, None, None, None, None],
-            [None, None, None, None, None, None, None, None],
+            [None, None, None, None, "Area", None, None, None],
             [None, None, None, None, None, None, None, None],
             [None, None, None, None, None, None, None, None],
             [None, None, None, None, None, None, None, None],
@@ -30,7 +30,7 @@ class Project:
         self.selectedBlock = pygame.Vector2(-1,-1)
     
     def getBoundingbox(self, rootSize, project):
-        bSscaler = min(rootSize[0] * 0.04, 100)
+        bSscaler = min(rootSize[0] * 0.04, 50)
         bS = pygame.Vector2(int((project.gridsize.x / project.gridsize.y) * bSscaler), bSscaler)
         return pygame.Vector2(
             len(self.map[0]) * bS.x,

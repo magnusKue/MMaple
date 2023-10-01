@@ -7,10 +7,9 @@ class Camera:
         self.parent = parent
 
     def handleEvents(self, event, rootSize, project):
-        print(f"{project.selectedBlock.x}, {project.selectedBlock.y}")
         if event.type == pygame.MOUSEMOTION:
             if pygame.mouse.get_pressed(3)[1]:
-                self.offset += pygame.Vector2(event.rel[0]/self.zoom, event.rel[1]/self.zoom)
+                self.offset += pygame.Vector2(event.rel[0], event.rel[1])
             
             mousePos = (pygame.mouse.get_pos() - self.parent.camera.offset)/self.zoom
             bS = self.parent.mapWindow.getBlockSize(rootSize, project)
@@ -26,11 +25,11 @@ class Camera:
                 self.centerCam(rootSize, project)
 
         elif event.type == pygame.MOUSEWHEEL:
-            self.zoom = min(max(self.zoom + (event.precise_y*0.1) + (event.precise_x*0.1), 1), 1.5)
+            self.zoom = min(max(self.zoom + (event.precise_y*0.1) + (event.precise_x*0.1), 1), 2)
             self.parent.mapWindow.recalcSurf(project, rootSize)
         
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1:
+            if event.button == 1 and event.pos[0] > min(rootSize[0]*.2, 450):
                 project.selectedBlock = self.parent.mapWindow.hoveredBlock
                 self.parent.mapWindow.recalcSurf(project, rootSize)
             
@@ -52,7 +51,7 @@ class MapWindow:
 
 
     def getBlockSize(self, rootSize, project):
-        bSscaler = min(rootSize[0] * 0.04, 100)
+        bSscaler = min(rootSize[0] * 0.04, 50)
         bS = pygame.Vector2(int((project.gridsize.x / project.gridsize.y) * bSscaler), bSscaler)
         return bS
 

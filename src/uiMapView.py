@@ -32,11 +32,13 @@ class MapView:
         surface.blit(self.mapWindow.getSurface(), (self.camera.offset.x, self.camera.offset.y))
         for button in self.buttons:
             button.draw(surface)
+        self.topPanel.draw(surface, project)
     
     def handleEvents(self, event, rootSize, project):
         self.camera.handleEvents(event, rootSize, project)
         for button in self.buttons:
             button.handleEvents(event, rootSize)
+        self.topPanel.handleEvents(event, project)
 
 
 
