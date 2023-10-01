@@ -13,6 +13,7 @@ class Camera:
             
             mousePos = (pygame.mouse.get_pos() - self.parent.camera.offset)/self.zoom
             bS = self.parent.mapWindow.getBlockSize(rootSize, project)
+
             if mousePos.x > 0 and mousePos.x < len(project.map[0]) * bS.x:
                 if (mousePos.y > 0 and mousePos.y < len(project.map[1]) * bS.y) or (self.parent.mapWindow.hoveredBlock != pygame.Vector2(-1,-1)):
                     self.parent.mapWindow.recalcSurf(project, rootSize)
@@ -29,8 +30,8 @@ class Camera:
             
 
     def centerCam(self, rootSize, project):
-        self.offset.x = rootSize[0] - (0.5*rootSize[0]*.8) - (0.5 * project.getBoundingbox().x)
-        self.offset.y = rootSize[1] - (0.5*rootSize[1]) - (0.5 * project.getBoundingbox().y)
+        self.offset.x = rootSize[0] - (0.5*rootSize[0]*.8) - (0.5 * project.getBoundingbox(rootSize, project).x)
+        self.offset.y = rootSize[1] - (0.5*rootSize[1]) - (0.5 * project.getBoundingbox(rootSize, project).y)
 
 class MapWindow:
     def __init__(self, project, parent, rootSize) -> None:

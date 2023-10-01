@@ -1,6 +1,6 @@
 import pygame_gui 
 import pygame, random, time, math
-import uiButtons, uiMapView_Window, definitions
+import uiButtons, uiMapView_Window,uiMapView_Sidepanel, definitions
 
 
         
@@ -10,7 +10,8 @@ class MapView:
         self.camera.centerCam(rootSize, project)
 
         self.manager = pygame_gui.UIManager(rootSize)
-        self.sidePanel = Sidepanel(self.manager, rootSize)
+        self.topPanel = uiMapView_Sidepanel.Toppanel(self.manager, rootSize)
+        self.bottomPanel = uiMapView_Sidepanel.Bottompanel(self.manager, rootSize)
 
         self.mapWindow = uiMapView_Window.MapWindow(project, self, rootSize)
 
