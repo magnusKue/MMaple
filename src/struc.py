@@ -42,13 +42,6 @@ class Collisionmap:
 
 class Room:
     def __init__(self):
-        self.doors = {
-            UP : False, 
-            DOWN : False,   
-            LEFT : False,   
-            RIGHT : False   
-        }
-        
         self.area = "none"
 
 
@@ -62,3 +55,10 @@ class Block:
             Tilemap(self.gridsize), 
             Collisionmap()
         ]
+
+        self.doors = {
+            UP : False, 
+            DOWN : False,   
+            LEFT : False,   
+            RIGHT : False   
+        }

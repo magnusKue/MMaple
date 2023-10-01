@@ -19,11 +19,11 @@ class UI:
     
     def draw(self, surface, project, rootSize):
         if self.mode == MAPVIEW:
-            self.mapView.draw(surface, project)
+            self.mapView.draw(surface, project, rootSize)
             self.mapView.manager.draw_ui(surface)
             
         elif self.mode == ROOMVIEW:
             self.roomView.manager.draw_ui(surface)
 
     def handleEvents(self, event, rootSize, project):
-        self.mapView.camera.handleEvents(event, rootSize, project)
+        self.mapView.handleEvents(event, rootSize, project)
