@@ -17,7 +17,7 @@ class Camera:
 
         elif event.type == pygame.MOUSEWHEEL:
             self.zoom = min(max(self.zoom + (event.precise_y*0.1) + (event.precise_x*0.1), 1), 1.5)
-            self.parent.mapWindow.recalcSurf(project)
+            self.parent.mapWindow.recalcSurf(project, rootSize)
             
 
     def centerCam(self, rootSize, project):
@@ -33,7 +33,7 @@ class MapView:
         self.manager = pygame_gui.UIManager(rootSize)
         self.sidePanel = Sidepanel(self.manager, rootSize)
 
-        self.mapWindow = MapWindow(project, self)
+        self.mapWindow = MapWindow(project, self, rootSize)
 
         self.buttons = []
         
@@ -59,13 +59,14 @@ class MapView:
             button.handleEvents(event, rootSize)
 
 class MapWindow:
-    def __init__(self, project, parent) -> None:
+    def __init__(self, project, parent, rootSize) -> None:
         self.parent = parent
-        self.surf = self.recalcSurf(project)
+        self.surf = self.recalcSurf(project, rootSize)
 
-    def recalcSurf(self, project):
+    def recalcSurf(self, project, rootSize):
         print("recalculated")
-        bS = pygame.Vector2(int((project.gridsize.x / project.gridsize.y) * 100), 100) # blocksize
+        bSscaler = min(rootSize[0] * 0.04, 100)
+        bS = pygame.Vector2(int((project.gridsize.x / project.gridsize.y) * bSscaler), bSscaler) # blocksize
         bounds = pygame.Vector2(
             len(project.map)*bS.x,
             len(project.map)*bS.y

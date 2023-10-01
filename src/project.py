@@ -12,10 +12,19 @@ class Project:
             None
         ]
         self.map = [ # filled with either none or self.room index pointers 
-            [None,  Block(self),      None,   None,None,None],
-            [Block(self),     Block(self),      Block(self),Block(self),Block(self),      None],
-            [Block(self),     None,   Block(self),Block(self),None,      None],
-            [None,   Block(self),     Block(self),      None,None,Block(self)]
+        #    [None,  Block(self),      None,   None,None,None],
+        #    [Block(self),     Block(self),      Block(self),Block(self),Block(self),      None],
+        #    [Block(self),     None,   Block(self),Block(self),None,      None],
+        #    [None,   Block(self),     Block(self),      None,None,Block(self)]
+        #]
+            [None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None]
         ]
 
         self.pointer = None
