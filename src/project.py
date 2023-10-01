@@ -27,7 +27,7 @@ class Project:
             [None, None, None, None, None, None, None, None]
         ]
 
-        self.pointer = None
+        self.selectedBlock = pygame.Vector2(-1,-1)
     
     def getBoundingbox(self, rootSize, project):
         bSscaler = min(rootSize[0] * 0.04, 100)

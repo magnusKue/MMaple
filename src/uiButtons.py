@@ -16,7 +16,7 @@ class Button:
                 else: 
                     self.hovered = False
             else: 
-                    self.hovered = False
+                self.hovered = False
         
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1 and self.hovered:
