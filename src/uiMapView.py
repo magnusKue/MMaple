@@ -10,9 +10,15 @@ class Camera:
         if event.type == pygame.MOUSEMOTION:
             if pygame.mouse.get_pressed(3)[1]:
                 self.offset += pygame.Vector2(event.rel[0]/self.zoom, event.rel[1]/self.zoom)
-            self.parent.mapWindow.recalcSurf(project, rootSize)
             
-
+            mousePos = (pygame.mouse.get_pos() - self.parent.camera.offset)/self.zoom
+            bS = self.parent.mapWindow.getBlockSize(rootSize, project)
+            if mousePos.x > 0 and mousePos.x < len(project.map[0]) * bS.x:
+                if (mousePos.y > 0 and mousePos.y < len(project.map[1]) * bS.y) or (self.parent.mapWindow.hoveredBlock != pygame.Vector2(-1,-1)):
+                    self.parent.mapWindow.recalcSurf(project, rootSize)
+            elif self.parent.mapWindow.hoveredBlock != pygame.Vector2(-1,-1):
+                self.parent.mapWindow.recalcSurf(project, rootSize)
+            
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_c:
                 self.centerCam(rootSize, project)
@@ -69,6 +75,7 @@ class MapWindow:
         self.addIcon = pygame.transform.scale(pygame.image.load("assets\plus.png"), (bS.x * 0.125, bS.x * 0.125)).convert_alpha()
         
         self.surf = self.recalcSurf(project, rootSize)
+        self.hoveredBlock = pygame.Vector2(-1,-1)
 
 
     def getBlockSize(self, rootSize, project):
@@ -88,7 +95,7 @@ class MapWindow:
             (pygame.mouse.get_pos()[0] - self.parent.camera.offset.x)/self.parent.camera.zoom,
             (pygame.mouse.get_pos()[1] - self.parent.camera.offset.y)/self.parent.camera.zoom
         )
-        
+
         for y, row in enumerate(project.map):
             for x, room in enumerate(row):
                 if not room:
@@ -102,6 +109,7 @@ class MapWindow:
                 if relMousePos.x  > x*bS.x  and relMousePos.y > y*bS.y :
                     if relMousePos.x < x*bS.x  + bS.x and relMousePos.y < y*bS.y + bS.y:
                         pygame.draw.rect(tempSurf, (200,100,100), pygame.Rect(x*bS.x,  y*bS.y,  bS.x,  bS.y), 2)
+                        self.hoveredBlock = pygame.Vector2(x,y)
                         
         self.surf = pygame.transform.scale_by(tempSurf, self.parent.camera.zoom)
         return self.surf
