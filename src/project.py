@@ -5,7 +5,9 @@ class Project:
     def __init__(self):
         self.gridsize = pygame.Vector2(25,15) # size of rooms
 
-        self.rooms = []
+        self.rooms = [
+            Room((255,0,0))
+        ]
         self.areas = []
 
         self.roomColorDefaults = [
@@ -28,16 +30,18 @@ class Project:
 
         self.furtherUsedCol = []
 
+        ref = Block(self)
+        ref.room = 0
         self.map = [ # filled with either none or self.room index pointers 
         #    [None,  Block(self),      None,   None,None,None],
         #    [Block(self),     Block(self),      Block(self),Block(self),Block(self),      None],
         #    [Block(self),     None,   Block(self),Block(self),None,      None],
         #    [None,   Block(self),     Block(self),      None,None,Block(self)]
         #]
-            [None, None, None, None, None, None, None, None],
-            [None, None, None, None, None, None, None, None],
-            [None, None, None, None, None, None, None, None],
-            [None, None, None, None, None, None, None, None],
+            [None, None, None, None, ref, None, None, None],
+            [None, None, None, ref, ref, None, ref, None],
+            [None, None, None, ref, None, ref, None, None],
+            [None, None, None, ref, ref, ref, None, None],
             [None, None, None, None, None, None, None, None],
             [None, None, None, None, None, None, None, None],
             [None, None, None, None, None, None, None, None],
@@ -46,6 +50,9 @@ class Project:
 
         self.selectedBlock = pygame.Vector2(-1,-1)
     
+    def getSelected(self):
+        return self.map[int(self.selectedBlock.y)][int(self.selectedBlock.x)]
+
     def getBoundingbox(self, rootSize, project):
         bSscaler = min(rootSize[0] * 0.04, 50)
         bS = pygame.Vector2(int((project.gridsize.x / project.gridsize.y) * bSscaler), bSscaler)

@@ -84,11 +84,23 @@ class MapWindow:
                             (x*bS.x + (0.5*bS.x)-(0.5 * self.addIcon.get_rect().width)),  
                             (y*bS.y + (0.5*bS.y)-(0.5 * self.addIcon.get_rect().height)))
                         )
+                
                 if relMousePos.x  > x*bS.x  and relMousePos.y > y*bS.y :
                     if relMousePos.x < x*bS.x  + bS.x and relMousePos.y < y*bS.y + bS.y:
                         pygame.draw.rect(tempSurf, (200,100,100), pygame.Rect(x*bS.x,  y*bS.y,  bS.x,  bS.y), 2)
                         self.hoveredBlock = pygame.Vector2(x,y)
                         hovered = True
+
+        if project.selectedBlock != pygame.Vector2(-1,-1) and project.getSelected():
+            for points in self.getAreaOutline(project, bS):
+                pygame.draw.lines(
+                    tempSurf,
+                    (0,0,0),
+                    closed=False,
+                    points=points,
+                    width=1
+                )
+    
         if not hovered:
             self.hoveredBlock = pygame.Vector2(-1,-1)
                         
@@ -97,3 +109,79 @@ class MapWindow:
     
     def getSurface(self) -> pygame.Surface:
         return self.surf
+    
+    def getAreaOutline(self, project, bS):
+        selectedRoom = project.getSelected().room
+        Mask = []
+        for y, row in enumerate(project.map):
+            newrow = []
+            for x, block in enumerate(row):
+                if not block:
+                    newrow.append(False)
+                    continue
+                else:
+                    if block.room == selectedRoom:
+                        newrow.append(True)
+                    else: newrow.append(False)
+            Mask.append(newrow)
+
+        points = []
+        of = pygame.Vector2(0,0) # offset
+        fix = 1 # shifts left and bottom points
+        for y, row in enumerate(Mask):
+            for x, block in enumerate(row):
+                if block:
+                    ##LEFT
+                    if x>0:
+                        if not Mask[y][x-1]:
+                            points.append([
+                                (x*bS.x+of.x, y*bS.y+of.y),
+                                (x*bS.x+of.x, (y+1)*bS.y-fix+of.y)
+                            ])
+                    else:
+                        if not Mask[y][x-1]:
+                            points.append([
+                                (x*bS.x+of.x, y*bS.y+of.y),
+                                (x*bS.x+of.x, (y+1)*bS.y-fix+of.y)
+                            ])
+                    ## RIGHT
+                    if x<(len(row)-1):
+                        if not Mask[y][x+1]:
+                            points.append([
+                                ((x+1)*bS.x-fix+of.x, y*bS.y+of.y),
+                                ((x+1)*bS.x-fix+of.x, (y+1)*bS.y-fix+of.y)
+                            ])
+                    else:
+                        if not Mask[y][x+1]:
+                            points.append([
+                                ((x+1)*bS.x-fix+of.x, y*bS.y+of.y),
+                                ((x+1)*bS.x-fix+of.x, (y+1)*bS.y-fix+of.y)
+                            ])
+                    ##TOP
+                    if y>0:
+                        if not Mask[y-1][x]:
+                            points.append([
+                                (x*bS.x+of.x, y*bS.y+of.y),
+                                ((x+1)*bS.x-fix+of.x, y*bS.y+of.y)
+                            ])
+                    else:
+                        points.append([
+                                (x*bS.x+of.x, y*bS.y+of.y),
+                                ((x+1)*bS.x-fix+of.x, y*bS.y+of.y)
+                            ])
+
+                    ## BOTTOM
+                    if x<(len(Mask)-1):
+                        if not Mask[y+1][x]:
+                            points.append([
+                                (x*bS.x+of.x, (y+1)*bS.y-fix+of.y),
+                                ((x+1)*bS.x-fix+of.x, (y+1)*bS.y-fix+of.y)
+                            ])
+                    else:
+                        if not Mask[y+1][x]:
+                            points.append([
+                                (x*bS.x+of.x, (y+1)*bS.y-fix+of.y),
+                                ((x+1)*bS.x-fix+of.x, (y+1)*bS.y-fix+of.y)
+                            ])
+
+        return points
