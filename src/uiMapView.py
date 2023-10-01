@@ -10,6 +10,8 @@ class Camera:
         if event.type == pygame.MOUSEMOTION:
             if pygame.mouse.get_pressed(3)[1]:
                 self.offset += pygame.Vector2(event.rel[0]/self.zoom, event.rel[1]/self.zoom)
+            self.parent.mapWindow.recalcSurf(project, rootSize)
+            
 
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_c:
@@ -61,24 +63,46 @@ class MapView:
 class MapWindow:
     def __init__(self, project, parent, rootSize) -> None:
         self.parent = parent
+        
+        bS = self.getBlockSize(rootSize, project)
+        addIconScaler = 0.125
+        self.addIcon = pygame.transform.scale(pygame.image.load("assets\plus.png"), (bS.x * 0.125, bS.x * 0.125)).convert_alpha()
+        
         self.surf = self.recalcSurf(project, rootSize)
 
-    def recalcSurf(self, project, rootSize):
-        print("recalculated")
+
+    def getBlockSize(self, rootSize, project):
         bSscaler = min(rootSize[0] * 0.04, 100)
-        bS = pygame.Vector2(int((project.gridsize.x / project.gridsize.y) * bSscaler), bSscaler) # blocksize
+        bS = pygame.Vector2(int((project.gridsize.x / project.gridsize.y) * bSscaler), bSscaler)
+        return bS
+
+    def recalcSurf(self, project, rootSize):
+        bS = self.getBlockSize(rootSize, project) # blocksize
         bounds = pygame.Vector2(
             len(project.map)*bS.x,
             len(project.map)*bS.y
         )
         tempSurf =  pygame.Surface(bounds, pygame.SRCALPHA, 32).convert_alpha()
+        
+        relMousePos = pygame.Vector2(
+            (pygame.mouse.get_pos()[0] - self.parent.camera.offset.x)/self.parent.camera.zoom,
+            (pygame.mouse.get_pos()[1] - self.parent.camera.offset.y)/self.parent.camera.zoom
+        )
+        
         for y, row in enumerate(project.map):
             for x, room in enumerate(row):
                 if not room:
                     pygame.draw.rect(tempSurf, (100,100,100), pygame.Rect(x*bS.x,  y*bS.y,  bS.x,  bS.y), 1)
+                    tempSurf.blit(self.addIcon, dest=(
+                        (x*bS.x + (0.5*bS.x)-(0.5 * self.addIcon.get_rect().width)),  
+                        (y*bS.y + (0.5*bS.y)-(0.5 * self.addIcon.get_rect().height)))
+                    )
                 else:
                     pygame.draw.rect(tempSurf, (100,100,100), pygame.Rect(x*bS.x,  y*bS.y,  bS.x,  bS.y))
-
+                if relMousePos.x  > x*bS.x  and relMousePos.y > y*bS.y :
+                    if relMousePos.x < x*bS.x  + bS.x and relMousePos.y < y*bS.y + bS.y:
+                        pygame.draw.rect(tempSurf, (200,100,100), pygame.Rect(x*bS.x,  y*bS.y,  bS.x,  bS.y), 2)
+                        
         self.surf = pygame.transform.scale_by(tempSurf, self.parent.camera.zoom)
         return self.surf
     
