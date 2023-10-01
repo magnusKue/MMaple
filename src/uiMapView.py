@@ -39,8 +39,3 @@ class MapView:
         for button in self.buttons:
             button.handleEvents(event, rootSize)
         self.topPanel.handleEvents(event, project, rootSize)
-
-
-
-
-        
