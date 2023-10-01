@@ -5,12 +5,29 @@ class Project:
     def __init__(self):
         self.gridsize = pygame.Vector2(25,15) # size of rooms
 
-        self.rooms = [
-            None,
-            None,
-            None,
-            None
+        self.rooms = []
+        self.areas = []
+
+        self.roomColorDefaults = [
+            (45,91,107),
+            (196,122,83),
+            (143,71,49),
+            (82,73,76),
+            (123,125,42),
+            (124,62,82),
+            (28,82,83),
+            (84,85,108),
+            (17,93,118),
+            (211,182,41),
+            (136,75,75),
+            (75,136,75),
+            (136,136,75),
+            (136,75,106),
+            (75,75,136)
         ]
+
+        self.furtherUsedCol = []
+
         self.map = [ # filled with either none or self.room index pointers 
         #    [None,  Block(self),      None,   None,None,None],
         #    [Block(self),     Block(self),      Block(self),Block(self),Block(self),      None],
@@ -18,7 +35,7 @@ class Project:
         #    [None,   Block(self),     Block(self),      None,None,Block(self)]
         #]
             [None, None, None, None, None, None, None, None],
-            [None, None, None, None, "Area", None, None, None],
+            [None, None, None, None, None, None, None, None],
             [None, None, None, None, None, None, None, None],
             [None, None, None, None, None, None, None, None],
             [None, None, None, None, None, None, None, None],

@@ -41,8 +41,9 @@ class Collisionmap:
         ]
 
 class Room:
-    def __init__(self):
-        self.area = "none"
+    def __init__(self, color):
+        self.color = color # index to project.roomColorDefaults
+        self.area = -1 # index to project.areas
 
 
 class Block:

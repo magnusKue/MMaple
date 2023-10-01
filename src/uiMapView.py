@@ -10,7 +10,7 @@ class MapView:
         self.camera.centerCam(rootSize, project)
 
         self.manager = pygame_gui.UIManager(rootSize)
-        self.topPanel = uiMapView_Sidepanel.Toppanel(self.manager, rootSize)
+        self.topPanel = uiMapView_Sidepanel.Toppanel(self.manager, rootSize, self)
         self.bottomPanel = uiMapView_Sidepanel.Bottompanel(self.manager, rootSize)
 
         self.mapWindow = uiMapView_Window.MapWindow(project, self, rootSize)
@@ -38,7 +38,7 @@ class MapView:
         self.camera.handleEvents(event, rootSize, project)
         for button in self.buttons:
             button.handleEvents(event, rootSize)
-        self.topPanel.handleEvents(event, project)
+        self.topPanel.handleEvents(event, project, rootSize)
 
 
 
