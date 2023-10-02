@@ -10,6 +10,8 @@ class MapView:
         self.camera.centerCam(rootSize, project)
 
         self.manager = pygame_gui.UIManager(rootSize)
+
+        self.optionsPanel = uiMapView_Sidepanel.OptionPanel(self.manager, rootSize, self)
         self.topPanel = uiMapView_Sidepanel.Toppanel(self.manager, rootSize, self)
         self.bottomPanel = uiMapView_Sidepanel.Bottompanel(self.manager, rootSize)
 
@@ -28,14 +30,20 @@ class MapView:
     def getButtonSize(self, rootSize):
         return max(min(rootSize[0]*0.025, 50), 35)
 
+    def drawFront(self, surface, project, rootSize):
+        self.optionsPanel.draw(surface)
+
     def draw(self, surface, project, rootSize):
         surface.blit(self.mapWindow.getSurface(), (self.camera.offset.x, self.camera.offset.y))
         for button in self.buttons:
             button.draw(surface)
+        
         self.topPanel.draw(surface, project)
     
     def handleEvents(self, event, rootSize, project):
         self.camera.handleEvents(event, rootSize, project)
         for button in self.buttons:
-            button.handleEvents(event, rootSize)
+            button.handleEvents(event)
+
+        self.optionsPanel.handleEvents(event)
         self.topPanel.handleEvents(event, project, rootSize)

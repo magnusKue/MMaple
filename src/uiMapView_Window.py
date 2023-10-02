@@ -68,7 +68,7 @@ class MapWindow:
             (pygame.mouse.get_pos()[1] - self.parent.camera.offset.y)/self.parent.camera.zoom
         )
 
-        hovered = False
+        # fill in rooms
         for y, row in enumerate(project.map):
             for x, block in enumerate(row):
                 if not block:
@@ -76,21 +76,10 @@ class MapWindow:
                 else:
                     color = project.rooms[block.room].color
                     pygame.draw.rect(tempSurf, color, pygame.Rect(x*bS.x,  y*bS.y,  bS.x,  bS.y))
-
-                if pygame.Vector2(x,y) == project.selectedBlock:
-                    pygame.draw.rect(tempSurf, (200,200,200), pygame.Rect(x*bS.x,  y*bS.y,  bS.x,  bS.y), 2)
-                    if not block:
-                        tempSurf.blit(self.addIcon, dest=(
-                            (x*bS.x + (0.5*bS.x)-(0.5 * self.addIcon.get_rect().width)),  
-                            (y*bS.y + (0.5*bS.y)-(0.5 * self.addIcon.get_rect().height)))
-                        )
                 
-                if relMousePos.x  > x*bS.x  and relMousePos.y > y*bS.y :
-                    if relMousePos.x < x*bS.x  + bS.x and relMousePos.y < y*bS.y + bS.y:
-                        pygame.draw.rect(tempSurf, (200,100,100), pygame.Rect(x*bS.x,  y*bS.y,  bS.x,  bS.y), 2)
-                        self.hoveredBlock = pygame.Vector2(x,y)
-                        hovered = True
+                
 
+        # draw room outline
         if project.selectedBlock != pygame.Vector2(-1,-1) and project.getSelected():
             for points in self.getAreaOutline(project, bS):
                 pygame.draw.lines(
@@ -100,6 +89,27 @@ class MapWindow:
                     points=points,
                     width=1
                 )
+        
+        hovered = False
+        # highlight selected and hovered block
+        for y, row in enumerate(project.map):
+            for x, block in enumerate(row):
+                if pygame.mouse.get_pos()[0] > min(rootSize[0]*.2, 450):
+                    if relMousePos.x  > x*bS.x  and relMousePos.y > y*bS.y :
+                        if relMousePos.x < x*bS.x  + bS.x and relMousePos.y < y*bS.y + bS.y:
+                            pygame.draw.rect(tempSurf, (200,100,100), pygame.Rect(x*bS.x,  y*bS.y,  bS.x,  bS.y), 2)
+                            self.hoveredBlock = pygame.Vector2(x,y)
+                            hovered = True
+
+                if pygame.Vector2(x,y) == project.selectedBlock:
+                    pygame.draw.rect(tempSurf, (200,200,200), pygame.Rect(x*bS.x,  y*bS.y,  bS.x,  bS.y), 2)
+                    if not block:
+                        tempSurf.blit(self.addIcon, dest=(
+                            (x*bS.x + (0.5*bS.x)-(0.5 * self.addIcon.get_rect().width)),  
+                            (y*bS.y + (0.5*bS.y)-(0.5 * self.addIcon.get_rect().height)))
+                        )
+
+        
     
         if not hovered:
             self.hoveredBlock = pygame.Vector2(-1,-1)

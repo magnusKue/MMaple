@@ -33,7 +33,6 @@ class App:
                 if event.type == pygame.KEYDOWN:				
                     if event.key == K_ESCAPE:
                         running = False
-
                 if event.type == pygame.VIDEORESIZE:
                     width,height = event.size
                     width = max(1000, width)
@@ -46,7 +45,7 @@ class App:
 
             self.ui.getManager().update(deltatime)
             self.window.root.fill(self.ui.getManager().ui_theme.get_colour('dark_bg'))
-            #print(int(self.clock.get_fps()))
+            print(int(self.clock.get_fps()))
             self.ui.draw(self.window.root, self.project, self.window.rootSize)
             pygame.display.flip()
         pygame.quit()

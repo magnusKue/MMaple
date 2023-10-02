@@ -21,6 +21,7 @@ class UI:
         if self.mode == MAPVIEW:
             self.mapView.draw(surface, project, rootSize)
             self.mapView.manager.draw_ui(surface)
+            self.mapView.drawFront(surface, project, rootSize)
             
         elif self.mode == ROOMVIEW:
             self.roomView.manager.draw_ui(surface)
