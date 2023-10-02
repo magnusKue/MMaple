@@ -12,6 +12,7 @@ class ToolPanel:
             manager=manager,
             container=manager.get_root_container()
         )
+        
 
 class OptionPanel:
     def __init__(self, manager, rootSize, parent): 
@@ -22,17 +23,43 @@ class OptionPanel:
             container=manager.get_root_container()
         )
 
-        self.saveButton = uiButtons.Button(
+        self.saveButton = uiButtons.Save_Button(
             pos  = pygame.Vector2(5,5), 
             size = pygame.Vector2(40, 40)
         )
         self.saveButton.loadIcon("assets/save.png")
-        
-    def handleEvents(self, event):
-        self.saveButton.handleEvents(event)
 
-    def draw(self, surface):
-        self.saveButton.draw(surface)
+        self.projectButton = uiButtons.Project_Button(
+            pos  = pygame.Vector2(50,5), 
+            size = pygame.Vector2(40, 40),
+            parent= self
+        )
+        self.projectButton.loadIcon("assets/save.png")
+
+        self.projectWindow = ProjectWindow(
+            rootSize=rootSize,
+            manager=manager
+        )
+        self.projectWindow.window.hide()
+
+    def initProjectWindow(self, manager, project, rootSize):
+        self.projectWindow = ProjectWindow(
+            rootSize,
+            manager=manager
+        )
+        self.projectWindow.window.set_display_title("Project properties")
+        project.blocking = True
+        
+    def handleEvents(self, event, project, rootSize):
+        self.saveButton.handleEvents(event, project)
+        self.projectButton.handleEvents(event, project, rootSize)
+
+        if event.type == pygame_gui.UI_WINDOW_CLOSE:
+            project.blocking = False
+
+    def draw(self, surface, project):
+        self.saveButton.draw(surface, project)
+        self.projectButton.draw(surface, project)
 
 class Toppanel:
     def __init__(self, manager, rootSize, parent): 
@@ -115,3 +142,12 @@ class Bottompanel:
             container=self.Panel.get_container(),
             manager=manager
         )
+
+
+class ProjectWindow:
+    def __init__(self, rootSize, manager) -> None:
+        self.window = pygame_gui.elements.UIWindow(
+            pygame.Rect((rootSize[0]*0.5) - 250,(rootSize[1]*0.5) - 250,500,500),
+            manager=manager
+        )
+        self.window.set_blocking(True)

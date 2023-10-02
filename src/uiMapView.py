@@ -21,31 +21,27 @@ class MapView:
 
         self.buttons = []
         
-        buttonSize = self.getButtonSize(rootSize)
+        buttonSize = 40
         self.buttons.append(
             uiButtons.ToolSwap_Button(
-                pos = pygame.Vector2(rootSize[0]-buttonSize-30, 30),
-                size=pygame.Vector2(buttonSize, buttonSize)
+                pos = pygame.Vector2(rootSize[0]-buttonSize-5, int(0.5*(rootSize[1]-min(rootSize[1]-200, 700)))+5),
+                size = pygame.Vector2(buttonSize, buttonSize)
             )
         )
- 
-    def getButtonSize(self, rootSize):
-        return max(min(rootSize[0]*0.025, 50), 35)
 
     def drawFront(self, surface, project, rootSize):
-        self.optionsPanel.draw(surface)
+        self.optionsPanel.draw(surface, project)
+        for button in self.buttons:
+            button.draw(surface, project)
 
     def draw(self, surface, project, rootSize):
         surface.blit(self.mapWindow.getSurface(), (self.camera.offset.x, self.camera.offset.y))
-        for button in self.buttons:
-            button.draw(surface)
-        
         self.topPanel.draw(surface, project)
     
     def handleEvents(self, event, rootSize, project):
         self.camera.handleEvents(event, rootSize, project)
         for button in self.buttons:
-            button.handleEvents(event)
+            button.handleEvents(event, project)
 
-        self.optionsPanel.handleEvents(event)
+        self.optionsPanel.handleEvents(event, project, rootSize)
         self.topPanel.handleEvents(event, project, rootSize)

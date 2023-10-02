@@ -1,4 +1,5 @@
 import pygame, definitions
+import pygame_gui
 
 class Button:
     def __init__(self, pos, size) -> None:
@@ -10,7 +11,7 @@ class Button:
         self.image = None
         self.hovered = False
     
-    def handleEvents(self, event):
+    def handleEvents(self, event, project):
         if event.type == pygame.MOUSEMOTION:
             if event.pos[0] > self.pos[0] and event.pos[1] > self.pos[1]:
                 if event.pos[0] < self.pos[0] + self.size.x and event.pos[1] < self.pos[1] + self.size.y:
@@ -21,14 +22,14 @@ class Button:
                 self.hovered = False
         
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1 and self.hovered:
+            if event.button == 1 and self.hovered and not project.blocking:
                 self.clicked()
 
-    def draw(self, surface:pygame.Surface):
+    def draw(self, surface:pygame.Surface, project):
         pygame.draw.rect(surface, (60,60,60), pygame.Rect(self.pos, self.size))
         pygame.draw.rect(surface, (100,100,100), pygame.Rect(self.pos, self.size), 1)
         surface.blit(self.image, pygame.Rect((self.pos.x+self.margin, self.pos.y+self.margin), self.size))
-        if self.hovered:
+        if self.hovered and not project.blocking:
             transparency = pygame.Surface(self.size, pygame.SRCALPHA, 32)
             transparency.fill((255,255,255,100))
             surface.blit(transparency,self.pos)
@@ -55,9 +56,27 @@ class ToolSwap_Button(Button):
             self.loadIcon("assets\cursor.png")
 
 class Save_Button(Button):
-    def __init__(self, pos, size) -> None:
+    def __init__(self, pos, size):
         super().__init__(pos, size)
         self.loadIcon("assets\save.png")
     
     def clicked(self):
         print("this is the part where its supposed to save")
+
+class Project_Button(Button):
+    def __init__(self, pos, size, parent):
+        super().__init__(pos, size)
+        self.loadIcon("assets\save.png")
+        self.parent = parent
+
+    def clicked(self):
+        self.parent.initProjectWindow(
+            manager=self.parent.parent.manager, 
+            project=self.projectStamp, 
+            rootSize=self.rootSizeStamp
+        )
+    
+    def handleEvents(self, event, project, rootSize):
+        super().handleEvents(event, project)
+        self.projectStamp = project
+        self.rootSizeStamp = rootSize

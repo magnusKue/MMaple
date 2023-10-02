@@ -1,8 +1,9 @@
 import pygame
 from pygame import gfxdraw
 
-MAPVIEW = True
-ROOMVIEW = False
+MAPVIEW = "mapV"
+ROOMVIEW = "roomV"
+STARTVIEW = "start"
 
 LEFT="a"
 RIGHT="d"

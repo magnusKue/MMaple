@@ -8,7 +8,7 @@ class Camera:
 
     def handleEvents(self, event, rootSize, project):
         if event.type == pygame.MOUSEMOTION:
-            if pygame.mouse.get_pressed(3)[1]:
+            if pygame.mouse.get_pressed(3)[1] and not project.blocking:
                 self.offset += pygame.Vector2(event.rel[0], event.rel[1])
             
             mousePos = (pygame.mouse.get_pos() - self.parent.camera.offset)/self.zoom
@@ -20,16 +20,16 @@ class Camera:
             elif self.parent.mapWindow.hoveredBlock != pygame.Vector2(-1,-1):
                 self.parent.mapWindow.recalcSurf(project, rootSize)
             
-        elif event.type == pygame.KEYDOWN:
+        elif event.type == pygame.KEYDOWN and not project.blocking:
             if event.key == pygame.K_c:
                 self.centerCam(rootSize, project)
 
-        elif event.type == pygame.MOUSEWHEEL:
+        elif event.type == pygame.MOUSEWHEEL and not project.blocking:
             self.zoom = min(max(self.zoom + (event.precise_y*0.1) + (event.precise_x*0.1), 1), 2)
             self.parent.mapWindow.recalcSurf(project, rootSize)
         
         toolBarMargin = 0.5*(rootSize[1]-min(rootSize[1]-200, 700))
-        if event.type == pygame.MOUSEBUTTONDOWN:
+        if event.type == pygame.MOUSEBUTTONDOWN and not project.blocking:
             if event.button == 1 and event.pos[0] > min(rootSize[0]*.2, 450) and (event.pos[0] < rootSize[0]-50 or (event.pos[1] < toolBarMargin or event.pos[1] > rootSize[1]-toolBarMargin)):
                 project.selectedBlock = self.parent.mapWindow.hoveredBlock
                 self.parent.mapWindow.recalcSurf(project, rootSize)
@@ -95,13 +95,14 @@ class MapWindow:
         # highlight selected and hovered block
         for y, row in enumerate(project.map):
             for x, block in enumerate(row):
-                toolBarMargin = 0.5*(rootSize[1]-min(rootSize[1]-200, 700))
-                if pygame.mouse.get_pos()[0] > min(rootSize[0]*.2, 450) and (pygame.mouse.get_pos()[0] < rootSize[0]-50 or (pygame.mouse.get_pos()[1] < toolBarMargin or pygame.mouse.get_pos()[1] > rootSize[1]-toolBarMargin)):
-                    if relMousePos.x  > x*bS.x  and relMousePos.y > y*bS.y :
-                        if relMousePos.x < x*bS.x  + bS.x and relMousePos.y < y*bS.y + bS.y:
-                            pygame.draw.rect(tempSurf, (200,100,100), pygame.Rect(x*bS.x,  y*bS.y,  bS.x,  bS.y), 2)
-                            self.hoveredBlock = pygame.Vector2(x,y)
-                            hovered = True
+                if not project.blocking:
+                    toolBarMargin = 0.5*(rootSize[1]-min(rootSize[1]-200, 700))
+                    if pygame.mouse.get_pos()[0] > min(rootSize[0]*.2, 450) and (pygame.mouse.get_pos()[0] < rootSize[0]-50 or (pygame.mouse.get_pos()[1] < toolBarMargin or pygame.mouse.get_pos()[1] > rootSize[1]-toolBarMargin)):
+                        if relMousePos.x  > x*bS.x  and relMousePos.y > y*bS.y :
+                            if relMousePos.x < x*bS.x  + bS.x and relMousePos.y < y*bS.y + bS.y:
+                                pygame.draw.rect(tempSurf, (200,100,100), pygame.Rect(x*bS.x,  y*bS.y,  bS.x,  bS.y), 2)
+                                self.hoveredBlock = pygame.Vector2(x,y)
+                                hovered = True
 
                 if pygame.Vector2(x,y) == project.selectedBlock:
                     pygame.draw.rect(tempSurf, (200,200,200), pygame.Rect(x*bS.x,  y*bS.y,  bS.x,  bS.y), 2)
