@@ -105,7 +105,7 @@ class Toppanel:
                     buttonSL,
                     buttonSL
                 ),
-                text=">",
+                text="⇨",
                 container=self.Panel.get_container(),
                 manager=manager
             )
@@ -117,7 +117,7 @@ class Toppanel:
                     buttonSL,
                     buttonSL
                 ),
-                text="<",
+                text="⇦",
                 container=self.Panel.get_container(),
                 manager=manager
             )
@@ -129,7 +129,7 @@ class Toppanel:
                     buttonSL,
                     buttonSL
                 ),
-                text="\/",
+                text="⇩",
                 container=self.Panel.get_container(),
                 manager=manager
             )
@@ -141,7 +141,7 @@ class Toppanel:
                     buttonSL,
                     buttonSL
                 ),
-                text="/\\",
+                text="⇧",
                 container=self.Panel.get_container(),
                 manager=manager
             )
@@ -184,14 +184,28 @@ class Toppanel:
         newBlock.room = len(project.rooms)-1 # add index of room
         project.map[int(project.selectedBlock.y)][int(project.selectedBlock.x)] = newBlock
         
-    def draw(self, surface, project):
+    def draw(self, surface, project): # check neighbours to see if buttons should be visible or not
         if not project.getSelected() and project.selectedBlock != pygame.Vector2(-1,-1):
-            for button in [self.createBlockButton, self.createTopBlockButton, self.createBottomBlockButton, self.createLeftBlockButton, self.createRightBlockButton]:
-                button.show()
+            self.createBlockButton.show()
+            if project.selectedBlock.y > 0:
+                if project.map[int(project.selectedBlock.y-1)][int(project.selectedBlock.x)]:
+                    self.createTopBlockButton.show()
+                else: self.createTopBlockButton.hide()
+            if project.selectedBlock.x > 0:
+                if project.map[int(project.selectedBlock.y)][int(project.selectedBlock.x-1)]:
+                    self.createLeftBlockButton.show()
+                else: self.createLeftBlockButton.hide()
+            if project.selectedBlock.y < len(project.map)-1:
+                if project.map[int(project.selectedBlock.y+1)][int(project.selectedBlock.x)]:
+                    self.createBottomBlockButton.show()
+                else: self.createBottomBlockButton.hide()
+            if project.selectedBlock.x < len(project.map)-1:
+                if project.map[int(project.selectedBlock.y)][int(project.selectedBlock.x+1)]:
+                    self.createRightBlockButton.show()
+                else: self.createRightBlockButton.hide()
         else:
             for button in [self.createBlockButton, self.createTopBlockButton, self.createBottomBlockButton, self.createLeftBlockButton, self.createRightBlockButton]:
                 button.hide()
-
 
 
 class Bottompanel:
