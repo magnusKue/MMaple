@@ -1,13 +1,13 @@
 import pygame
 from struc import *
+import definitions
 
 class Project:
     def __init__(self):
+        self.name = "template"
         self.gridsize = pygame.Vector2(25,15) # size of rooms
 
-        self.rooms = [
-            Room((255,0,0))
-        ]
+        self.rooms = []
         self.areas = []
 
         self.roomColorDefaults = [
@@ -30,26 +30,23 @@ class Project:
 
         self.furtherUsedCol = []
 
-        ref = Block(self)
-        ref.room = 0
-        self.map = [ # filled with either none or self.room index pointers 
-        #    [None,  Block(self),      None,   None,None,None],
-        #    [Block(self),     Block(self),      Block(self),Block(self),Block(self),      None],
-        #    [Block(self),     None,   Block(self),Block(self),None,      None],
-        #    [None,   Block(self),     Block(self),      None,None,Block(self)]
-        #]
-            [None, None, None, None, ref, None, None, None],
-            [None, None, None, ref, ref, None, ref, None],
-            [None, None, None, ref, None, ref, None, None],
-            [None, None, None, ref, ref, ref, None, None],
-            [None, None, None, None, None, None, None, None],
-            [None, None, None, None, None, None, None, None],
-            [None, None, None, None, None, None, None, None],
-            [None, None, None, None, None, None, None, None]
+
+        self.map = [
+            [None, None],
+            [None,None]
+            #[None, None, None, None, ref, None, None, None],
+            #[None, None, None, ref, ref, None, ref, None],
+            #[None, None, None, ref, None, ref, None, None],
+            #[None, None, None, ref, ref, ref, None, None],
+            #[None, None, None, None, None, None, None, None],
+            #[None, None, None, None, None, None, None, None],
+            #[None, None, None, None, None, None, None, None],
+            #[None, None, None, None, None, None, None, None]
         ]
 
         self.selectedBlock = pygame.Vector2(-1,-1)
         self.blocking = False
+        self.mode = definitions.MAPVIEW
     
     def getSelected(self):
         return self.map[int(self.selectedBlock.y)][int(self.selectedBlock.x)]

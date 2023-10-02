@@ -5,6 +5,7 @@ from project import Project
 from UI import *
 from definitions import *
 import sys
+import tkinter as tk
 
 class App:
     def __init__(self):
@@ -14,11 +15,19 @@ class App:
         print(f"successes: {success}\nfailures: {failures}")
 
         self.project = Project()
+        self.project.mode = STARTVIEW
 
         self.clock = pygame.time.Clock()
 
         self.window = Window([1500,800])
+
+        infoObject = pygame.display.Info()
+        rootSize = (infoObject.current_w, infoObject.current_h)
+
         self.ui = UI(self.window.rootSize, self.project)
+
+        root = tk.Tk()
+        root.withdraw() # for file dialoge only
         
         
 
@@ -38,13 +47,24 @@ class App:
                     width = max(1000, width)
                     height = max(800, height)
                     self.window = Window([width, height])
-                    self.ui = UI(self.window.rootSize, self.project)	
+                    self.ui = UI(
+                        self.window.rootSize, 
+                        self.project, 
+                        {
+                            "name" : self.ui.startView.nameInput.get_text(),
+                            "mapX" : self.ui.startView.mapSizeXInput.get_text(),
+                            "mapY" : self.ui.startView.mapSizeYInput.get_text(),
+                            "roomX" : self.ui.startView.roomSizeXInput.get_text(),
+                            "roomY" : self.ui.startView.roomSizeYInput.get_text(),
+                            "path" : self.ui.startView.pathInput.get_text()
+                        }
+                    )	
 
-                self.ui.getManager().process_events(event)
+                self.ui.getManager(self.project).process_events(event)
                 self.ui.handleEvents(event, self.window.rootSize, self.project)
 
-            self.ui.getManager().update(deltatime)
-            self.window.root.fill(self.ui.getManager().ui_theme.get_colour('dark_bg'))
+            self.ui.getManager(self.project).update(deltatime)
+            self.window.root.fill(self.ui.getManager(self.project).ui_theme.get_colour('dark_bg'))
             #print(int(self.clock.get_fps()))
             self.ui.draw(self.window.root, self.project, self.window.rootSize)
             pygame.display.flip()

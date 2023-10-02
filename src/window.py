@@ -6,3 +6,4 @@ class Window:
         self.rootSize = rootSize
         self.root = pygame.display.set_mode(self.rootSize, RESIZABLE)
         pygame.display.set_caption("MMaple")
+        
