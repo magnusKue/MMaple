@@ -2,6 +2,17 @@ import pygame_gui
 import pygame, random
 import struc, uiButtons
 
+class ToolPanel:
+    def __init__(self, manager, rootSize, parent): 
+        self.parent = parent       
+        height = min(rootSize[1]-200, 700) 
+        margin = int(0.5*(rootSize[1]-height))
+        self.Panel = pygame_gui.elements.UIPanel(
+            pygame.Rect(rootSize[0]-50, margin, 60, rootSize[1] - (2*margin)),
+            manager=manager,
+            container=manager.get_root_container()
+        )
+
 class OptionPanel:
     def __init__(self, manager, rootSize, parent): 
         self.parent = parent       

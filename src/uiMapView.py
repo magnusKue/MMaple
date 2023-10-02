@@ -14,6 +14,8 @@ class MapView:
         self.optionsPanel = uiMapView_Sidepanel.OptionPanel(self.manager, rootSize, self)
         self.topPanel = uiMapView_Sidepanel.Toppanel(self.manager, rootSize, self)
         self.bottomPanel = uiMapView_Sidepanel.Bottompanel(self.manager, rootSize)
+        self.toolPanel = uiMapView_Sidepanel.ToolPanel(self.manager, rootSize, self)
+
 
         self.mapWindow = uiMapView_Window.MapWindow(project, self, rootSize)
 
