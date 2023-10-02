@@ -31,18 +31,7 @@ class Project:
         self.furtherUsedCol = []
 
 
-        self.map = [
-            [None, None],
-            [None,None]
-            #[None, None, None, None, ref, None, None, None],
-            #[None, None, None, ref, ref, None, ref, None],
-            #[None, None, None, ref, None, ref, None, None],
-            #[None, None, None, ref, ref, ref, None, None],
-            #[None, None, None, None, None, None, None, None],
-            #[None, None, None, None, None, None, None, None],
-            #[None, None, None, None, None, None, None, None],
-            #[None, None, None, None, None, None, None, None]
-        ]
+        self.map = [ [None]*8 for i in range(8)]
 
         self.selectedBlock = pygame.Vector2(-1,-1)
         self.blocking = False

@@ -12,7 +12,6 @@ class ToolPanel:
             manager=manager,
             container=manager.get_root_container()
         )
-        
 
 class OptionPanel:
     def __init__(self, manager, rootSize, parent): 
@@ -81,24 +80,89 @@ class Toppanel:
             manager=manager
         )
 
-        self.createBlockButton = pygame_gui.elements.UIButton(
-            pygame.Rect(
-                5,
-                self.Panel.get_container().get_rect().height * 0.5 - 30,
-                self.Panel.get_container().get_rect().width-10,
-                60
-            ),
-            text="create new block",
-            container=self.Panel.get_container(),
-            manager=manager
-        )
+        if True: ## CREATION BUTTONS
+            buttonSL = 50 # button sidelength 
+            self.createBlockButton = pygame_gui.elements.UIButton(
+                pygame.Rect(
+                    (0.5*self.Panel.get_container().get_rect().width) - (0.5*buttonSL),
+                    (0.5*self.Panel.get_container().get_rect().height) - (0.5*buttonSL),
+                    buttonSL,
+                    buttonSL
+                ),
+                text="+",
+                container=self.Panel.get_container(),
+                manager=manager
+            )
+
+            self.createLeftBlockButton = pygame_gui.elements.UIButton(
+                pygame.Rect(
+                    (0.5*self.Panel.get_container().get_rect().width) - (0.5*buttonSL) - buttonSL - 5,
+                    (0.5*self.Panel.get_container().get_rect().height) - (0.5*buttonSL),
+                    buttonSL,
+                    buttonSL
+                ),
+                text=">",
+                container=self.Panel.get_container(),
+                manager=manager
+            )
+
+            self.createRightBlockButton = pygame_gui.elements.UIButton(
+                pygame.Rect(
+                    (0.5*self.Panel.get_container().get_rect().width) - (0.5*buttonSL) + buttonSL + 5,
+                    (0.5*self.Panel.get_container().get_rect().height) - (0.5*buttonSL),
+                    buttonSL,
+                    buttonSL
+                ),
+                text="<",
+                container=self.Panel.get_container(),
+                manager=manager
+            )
+
+            self.createTopBlockButton = pygame_gui.elements.UIButton(
+                pygame.Rect(
+                    (0.5*self.Panel.get_container().get_rect().width) - (0.5*buttonSL) ,
+                    (0.5*self.Panel.get_container().get_rect().height) - (0.5*buttonSL)- buttonSL - 5,
+                    buttonSL,
+                    buttonSL
+                ),
+                text="\/",
+                container=self.Panel.get_container(),
+                manager=manager
+            )
+
+            self.createBottomBlockButton = pygame_gui.elements.UIButton(
+                pygame.Rect(
+                    (0.5*self.Panel.get_container().get_rect().width) - (0.5*buttonSL) ,
+                    (0.5*self.Panel.get_container().get_rect().height) - (0.5*buttonSL)+ buttonSL + 5,
+                    buttonSL,
+                    buttonSL
+                ),
+                text="/\\",
+                container=self.Panel.get_container(),
+                manager=manager
+            )
 
     def handleEvents(self, event, project, rootSize):
         if event.type == pygame_gui.UI_BUTTON_PRESSED:
             if event.ui_element == self.createBlockButton:
                 self.createBlock(project)
                 self.parent.mapWindow.recalcSurf(project, rootSize)
+            
+            if event.ui_element == self.createBottomBlockButton: self.copyBlock(project, 0, 1);self.parent.mapWindow.recalcSurf(project, rootSize)
+            if event.ui_element == self.createTopBlockButton:    self.copyBlock(project, 0, -1);self.parent.mapWindow.recalcSurf(project, rootSize)
+            if event.ui_element == self.createLeftBlockButton:   self.copyBlock(project, -1, 0);self.parent.mapWindow.recalcSurf(project, rootSize)
+            if event.ui_element == self.createRightBlockButton:  self.copyBlock(project, 1, 0);self.parent.mapWindow.recalcSurf(project, rootSize)
 
+    def copyBlock(self, project, x,y):
+        if x==-1 and int(project.selectedBlock.x) == 0: return
+        if y==-1 and int(project.selectedBlock.y) == 0: return
+        if x==1 and int(project.selectedBlock.x) == len(project.map[0])-1: return
+        if y==1 and int(project.selectedBlock.y) == len(project.map)-1: return
+        if not project.map[int(project.selectedBlock.y)+y][int(project.selectedBlock.x)+x]: return
+        newBlock = struc.Block(project)
+        newBlock.room = project.map[int(project.selectedBlock.y)+y][int(project.selectedBlock.x)+x].room # add index of room
+        project.map[int(project.selectedBlock.y)][int(project.selectedBlock.x)] = newBlock
+    
     def createBlock(self, project):
         availableCol = project.roomColorDefaults
         for room in project.rooms:
@@ -118,9 +182,11 @@ class Toppanel:
         
     def draw(self, surface, project):
         if not project.getSelected() and project.selectedBlock != pygame.Vector2(-1,-1):
-            self.createBlockButton.show()
+            for button in [self.createBlockButton, self.createTopBlockButton, self.createBottomBlockButton, self.createLeftBlockButton, self.createRightBlockButton]:
+                button.show()
         else:
-            self.createBlockButton.hide()
+            for button in [self.createBlockButton, self.createTopBlockButton, self.createBottomBlockButton, self.createLeftBlockButton, self.createRightBlockButton]:
+                button.hide()
 
 
 

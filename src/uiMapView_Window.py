@@ -152,11 +152,10 @@ class MapWindow:
                                 (x*bS.x+of.x, (y+1)*bS.y-fix+of.y)
                             ])
                     else:
-                        if not Mask[y][x-1]:
-                            points.append([
-                                (x*bS.x+of.x, y*bS.y+of.y),
-                                (x*bS.x+of.x, (y+1)*bS.y-fix+of.y)
-                            ])
+                        points.append([
+                            (x*bS.x+of.x, y*bS.y+of.y),
+                            (x*bS.x+of.x, (y+1)*bS.y-fix+of.y)
+                        ])
                     ## RIGHT
                     if x<(len(row)-1):
                         if not Mask[y][x+1]:
@@ -165,11 +164,10 @@ class MapWindow:
                                 ((x+1)*bS.x-fix+of.x, (y+1)*bS.y-fix+of.y)
                             ])
                     else:
-                        if not Mask[y][x+1]:
-                            points.append([
-                                ((x+1)*bS.x-fix+of.x, y*bS.y+of.y),
-                                ((x+1)*bS.x-fix+of.x, (y+1)*bS.y-fix+of.y)
-                            ])
+                        points.append([
+                            ((x+1)*bS.x-fix+of.x, y*bS.y+of.y),
+                            ((x+1)*bS.x-fix+of.x, (y+1)*bS.y-fix+of.y)
+                        ])
                     ##TOP
                     if y>0:
                         if not Mask[y-1][x]:
@@ -191,10 +189,9 @@ class MapWindow:
                                 ((x+1)*bS.x-fix+of.x, (y+1)*bS.y-fix+of.y)
                             ])
                     else:
-                        if not Mask[y+1][x]:
-                            points.append([
-                                (x*bS.x+of.x, (y+1)*bS.y-fix+of.y),
-                                ((x+1)*bS.x-fix+of.x, (y+1)*bS.y-fix+of.y)
-                            ])
+                        points.append([
+                            (x*bS.x+of.x, (y+1)*bS.y-fix+of.y),
+                            ((x+1)*bS.x-fix+of.x, (y+1)*bS.y-fix+of.y)
+                        ])
 
         return points

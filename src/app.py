@@ -15,7 +15,7 @@ class App:
         print(f"successes: {success}\nfailures: {failures}")
 
         self.project = Project()
-        self.project.mode = STARTVIEW
+        self.project.mode = MAPVIEW
 
         self.clock = pygame.time.Clock()
 
