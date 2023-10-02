@@ -11,7 +11,7 @@ class MapView:
 
         self.manager = pygame_gui.UIManager(rootSize)
 
-        self.optionsPanel = uiMapView_Sidepanel.OptionPanel(self.manager, rootSize, self)
+        self.optionsPanel = uiMapView_Sidepanel.OptionPanel(self.manager, rootSize, self, project)
         self.topPanel = uiMapView_Sidepanel.Toppanel(self.manager, rootSize, self)
         self.bottomPanel = uiMapView_Sidepanel.Bottompanel(self.manager, rootSize)
         self.toolPanel = uiMapView_Sidepanel.ToolPanel(self.manager, rootSize, self)
@@ -43,5 +43,6 @@ class MapView:
         for button in self.buttons:
             button.handleEvents(event, project)
 
+        self.mapWindow.handleEvents(event, project, rootSize)
         self.optionsPanel.handleEvents(event, project, rootSize)
         self.topPanel.handleEvents(event, project, rootSize)

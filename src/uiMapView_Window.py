@@ -55,6 +55,29 @@ class MapWindow:
         bSscaler = min(rootSize[0] * 0.04, 50)
         bS = pygame.Vector2(int((project.gridsize.x / project.gridsize.y) * bSscaler), bSscaler)
         return bS
+    
+    def handleEvents(self, event, project, rootSize):
+        if event.type == pygame.KEYDOWN and project.selectedBlock != pygame.Vector2(-1,-1) and not project.blocking:
+            if event.key == pygame.K_LEFT:
+                if project.selectedBlock.x-1 >= 0:
+                    project.selectedBlock.x -= 1
+                    self.parent.camera.offset.x += self.getBlockSize(rootSize, project).x * self.parent.camera.zoom
+                    self.recalcSurf(project, rootSize)
+            elif event.key == pygame.K_UP:
+                if project.selectedBlock.y-1 >= 0:
+                    project.selectedBlock.y -= 1
+                    self.parent.camera.offset.y += self.getBlockSize(rootSize, project).y * self.parent.camera.zoom
+                    self.recalcSurf(project, rootSize)
+            elif event.key == pygame.K_RIGHT:
+                if project.selectedBlock.x+1 <= len(project.map[0])-1:
+                    project.selectedBlock.x += 1
+                    self.parent.camera.offset.x -= self.getBlockSize(rootSize, project).x * self.parent.camera.zoom
+                    self.recalcSurf(project, rootSize)
+            elif event.key == pygame.K_DOWN:
+                if project.selectedBlock.y+1 <= len(project.map)-1:
+                    project.selectedBlock.y += 1
+                    self.parent.camera.offset.y -= self.getBlockSize(rootSize, project).y * self.parent.camera.zoom
+                    self.recalcSurf(project, rootSize)
 
     def recalcSurf(self, project, rootSize):
         bS = self.getBlockSize(rootSize, project) # blocksize
@@ -182,7 +205,7 @@ class MapWindow:
                             ])
 
                     ## BOTTOM
-                    if x<(len(Mask)-1):
+                    if y<(len(Mask)-1):
                         if not Mask[y+1][x]:
                             points.append([
                                 (x*bS.x+of.x, (y+1)*bS.y-fix+of.y),

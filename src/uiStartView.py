@@ -65,6 +65,7 @@ class StartView:
                     manager = self.manager, 
                     container = self.createPanel.get_container()
                 )
+                self.nameText.set_tooltip("determines under which filename the project is saved")
 
                 self.mapSizeText = pygame_gui.elements.UILabel(
                     pygame.Rect(0, 2*s+blockShift, 0.5*cW, 25),
@@ -72,6 +73,7 @@ class StartView:
                     manager = self.manager, 
                     container = self.createPanel.get_container()
                 )
+                self.mapSizeText.set_tooltip("sets the number of blocks on the map")
 
                 if True: # MAP: X && Y
                     self.mapSizeXText = pygame_gui.elements.UILabel(
@@ -90,10 +92,12 @@ class StartView:
 
                 self.roomSizeText = pygame_gui.elements.UILabel(
                     pygame.Rect(0, 3*s+blockShift, 0.5*cW, 25),
-                    text = "room size:  ",
+                    text = "block size: ",
                     manager = self.manager, 
                     container = self.createPanel.get_container()
                 )
+                self.roomSizeText.set_tooltip("sets the number of tiles per block")
+                
 
                 if True: # ROOM: X && Y
                     self.roomSizeXText = pygame_gui.elements.UILabel(
@@ -116,6 +120,7 @@ class StartView:
                     manager = self.manager, 
                     container = self.createPanel.get_container()
                 )
+                self.pathText.set_tooltip("determines where the project is saved to")
 
             if True: ## INPUT
                 if True: # NAME INPUT
@@ -257,14 +262,12 @@ class StartView:
 
     def createProject(self, project, ui, rootSize):
         project.name = self.nameInput.get_text()
-        project.gridSize = pygame.Vector2(int(self.roomSizeXInput.get_text()), int(self.roomSizeYInput.get_text()))
+        project.gridsize = pygame.Vector2(int(self.roomSizeXInput.get_text()), int(self.roomSizeYInput.get_text()))
         project.map =  [ [None]*int(self.mapSizeXInput.get_text()) for i in range(int(self.mapSizeYInput.get_text()))]
 
         project.mode = definitions.MAPVIEW
         ui.mapView.mapWindow.recalcSurf(project, rootSize)
         pygame.display.set_caption("MMaple :: " + project.name)
-
-
 
     def checkPath(self):
         txt = str(self.pathInput.get_text())

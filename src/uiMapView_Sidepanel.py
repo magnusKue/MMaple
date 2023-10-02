@@ -14,7 +14,7 @@ class ToolPanel:
         )
 
 class OptionPanel:
-    def __init__(self, manager, rootSize, parent): 
+    def __init__(self, manager, rootSize, parent, project): 
         self.parent = parent       
         self.Panel = pygame_gui.elements.UIPanel(
             pygame.Rect(0, 0, min(rootSize[0]*.2, 450), 50),
@@ -37,17 +37,21 @@ class OptionPanel:
 
         self.projectWindow = ProjectWindow(
             rootSize=rootSize,
-            manager=manager
+            manager=manager,
+            project=project
         )
         self.projectWindow.window.hide()
 
     def initProjectWindow(self, manager, project, rootSize):
         self.projectWindow = ProjectWindow(
             rootSize,
-            manager=manager
+            manager=manager,
+            project=project
         )
         self.projectWindow.window.set_display_title("Project properties")
         project.blocking = True
+
+
         
     def handleEvents(self, event, project, rootSize):
         self.saveButton.handleEvents(event, project)
@@ -211,9 +215,42 @@ class Bottompanel:
 
 
 class ProjectWindow:
-    def __init__(self, rootSize, manager) -> None:
+    def __init__(self, rootSize, manager, project) -> None:
+
+        values = {
+            "project name:":f"[ {project.name} ]",
+            "map size:":f"[ {len(project.map[0])} | {len(project.map)} ]",
+            "block size:":f"[ {int(project.gridsize.x)} | {int(project.gridsize.x)} ]"
+        }
+
+        windowSize = pygame.Vector2(300,len(values)* 25 + 100)
         self.window = pygame_gui.elements.UIWindow(
-            pygame.Rect((rootSize[0]*0.5) - 250,(rootSize[1]*0.5) - 250,500,500),
+            rect=pygame.Rect(
+                (rootSize[0]*0.5) - 250,
+                (rootSize[1]*0.5) - 250,
+                windowSize.x,
+                windowSize.y
+            ),
             manager=manager
         )
         self.window.set_blocking(True)
+
+        wC = self.window.get_container() # window container
+        self.descText = pygame_gui.elements.UILabel(
+            pygame.Rect(5,5, wC.get_rect().w-10, 25),
+            text="Project properties:",
+            container=wC,
+            manager=manager
+        )
+
+        self.items = []
+        for index, valuePair in enumerate(values.items()):
+            self.items.append(
+                pygame_gui.elements.UILabel(
+                    pygame.Rect(5,35 + index * 25, wC.get_rect().w-10, 25),
+                    text=f"{valuePair[0]} {valuePair[1]}",
+                    container=wC,
+                    manager=manager
+                )
+            )
+

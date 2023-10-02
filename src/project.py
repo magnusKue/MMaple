@@ -5,7 +5,7 @@ import definitions
 class Project:
     def __init__(self):
         self.name = "template"
-        self.gridsize = pygame.Vector2(25,15) # size of rooms
+        self.gridsize = pygame.Vector2(25,15) # size of blocks
 
         self.rooms = []
         self.areas = []
