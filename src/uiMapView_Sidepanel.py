@@ -283,8 +283,8 @@ class Bottompanel:
             project=project
         )
 
-    def handleEvents(self, event, project, rootSize):
-        self.colorButton.handleEvents(event, project, rootSize)
+    def handleEvents(self, event, project, rootSize, mapWindow):
+        self.colorButton.handleEvents(event, project, rootSize, mapWindow)
 
     def drawFront(self, surface, project):
         self.colorButton.draw(surface, project)

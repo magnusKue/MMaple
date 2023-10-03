@@ -1,5 +1,7 @@
 import pygame, definitions
 import pygame_gui
+import tkinter as tk
+from tkinter import colorchooser
 
 class Button:
     def __init__(self, pos, size) -> None:
@@ -31,7 +33,7 @@ class Button:
         surface.blit(self.image, pygame.Rect((self.pos.x+self.margin, self.pos.y+self.margin), self.size))
         if self.hovered and not project.blocking:
             transparency = pygame.Surface(self.size, pygame.SRCALPHA, 32)
-            transparency.fill((255,255,255,100))
+            transparency.fill((255,255,255,30))
             surface.blit(transparency,self.pos)
             
     def loadIcon(self, path) -> pygame.Surface:
@@ -51,7 +53,7 @@ class ColorButton:
         self.color = color
         self.hovered = False
     
-    def handleEvents(self, event, project):
+    def handleEvents(self, event, project, mapWindow, rootSize):
         if event.type == pygame.MOUSEMOTION:
             if event.pos[0] > self.pos[0] and event.pos[1] > self.pos[1]:
                 if event.pos[0] < self.pos[0] + self.size.x and event.pos[1] < self.pos[1] + self.size.y:
@@ -63,17 +65,17 @@ class ColorButton:
         
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1 and self.hovered and not project.blocking:
-                self.clicked()
+                self.clicked(project, mapWindow, rootSize)
 
     def draw(self, surface:pygame.Surface, project):
         pygame.draw.rect(surface, self.color, pygame.Rect(self.pos, self.size))
         pygame.draw.rect(surface, (int(self.color[0]*0.7), int(self.color[1]*0.7), int(self.color[2]*0.7)), pygame.Rect(self.pos, self.size), 1)
         if self.hovered and not project.blocking:
             transparency = pygame.Surface(self.size, pygame.SRCALPHA, 32)
-            transparency.fill((255,255,255,100))
+            transparency.fill((255,255,255,30))
             surface.blit(transparency,self.pos)
 
-    def clicked(self):
+    def clicked(self, project, mapWindow, rootSize):
         pass
 
 class ToolSwap_Button(Button):
@@ -127,8 +129,8 @@ class AreaColorButton(ColorButton):
         else:
             self.color = (80,80,80)
     
-    def handleEvents(self, event, project, rootSize):
-        super().handleEvents(event, project)
+    def handleEvents(self, event, project, rootSize, mapWindow):
+        super().handleEvents(event, project, mapWindow, rootSize)
         if project.selectedBlock != pygame.Vector2(-1,-1):
             if project.getSelected():
                 self.color = project.rooms[project.getSelected().room].color
@@ -136,6 +138,12 @@ class AreaColorButton(ColorButton):
                 self.color = (100,100,100)
         else:
             self.color = (80,80,80)    
-    def clicked(self):
-        pass
+    
+    def clicked(self, project, mapWindow, rootSize):
+        if project.getSelected():
+            choosenColor = colorchooser.askcolor(title ="Choose a new room color!", initialcolor=project.rooms[project.getSelected().room].color)[0]
+            if choosenColor:
+                project.rooms[project.getSelected().room].color = choosenColor
+            mapWindow.recalcSurf(project, rootSize)
+        
         

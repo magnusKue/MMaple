@@ -48,4 +48,4 @@ class MapView:
         self.mapWindow.handleEvents(event, project, rootSize)
         self.optionsPanel.handleEvents(event, project, rootSize)
         self.topPanel.handleEvents(event, project, rootSize)
-        self.bottomPanel.handleEvents(event, project, rootSize)
+        self.bottomPanel.handleEvents(event, project, rootSize, self.mapWindow)
