@@ -13,7 +13,7 @@ class MapView:
 
         self.optionsPanel = uiMapView_Sidepanel.OptionPanel(self.manager, rootSize, self, project)
         self.topPanel = uiMapView_Sidepanel.Toppanel(self.manager, rootSize, self)
-        self.bottomPanel = uiMapView_Sidepanel.Bottompanel(self.manager, rootSize)
+        self.bottomPanel = uiMapView_Sidepanel.Bottompanel(self.manager, rootSize, project)
         self.toolPanel = uiMapView_Sidepanel.ToolPanel(self.manager, rootSize, self)
 
 
@@ -30,9 +30,11 @@ class MapView:
         )
 
     def drawFront(self, surface, project, rootSize):
-        self.optionsPanel.draw(surface, project)
         for button in self.buttons:
             button.draw(surface, project)
+        self.optionsPanel.draw(surface, project)
+        self.topPanel.drawFront(surface, project)
+        self.bottomPanel.drawFront(surface, project)
 
     def draw(self, surface, project, rootSize):
         surface.blit(self.mapWindow.getSurface(), (self.camera.offset.x, self.camera.offset.y))
@@ -46,3 +48,4 @@ class MapView:
         self.mapWindow.handleEvents(event, project, rootSize)
         self.optionsPanel.handleEvents(event, project, rootSize)
         self.topPanel.handleEvents(event, project, rootSize)
+        self.bottomPanel.handleEvents(event, project, rootSize)

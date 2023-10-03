@@ -34,7 +34,6 @@ class Camera:
                 project.selectedBlock = self.parent.mapWindow.hoveredBlock
                 self.parent.mapWindow.recalcSurf(project, rootSize)
             
-
     def centerCam(self, rootSize, project):
         self.offset.x = rootSize[0] - (0.5*rootSize[0]*.8) - (0.5 * project.getBoundingbox(rootSize, project).x)
         self.offset.y = rootSize[1] - (0.5*rootSize[1]) - (0.5 * project.getBoundingbox(rootSize, project).y)
@@ -49,7 +48,6 @@ class MapWindow:
         
         self.surf = self.recalcSurf(project, rootSize)
         self.hoveredBlock = pygame.Vector2(-1,-1)
-
 
     def getBlockSize(self, rootSize, project):
         bSscaler = min(rootSize[0] * 0.04, 50)

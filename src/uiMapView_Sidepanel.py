@@ -50,9 +50,7 @@ class OptionPanel:
         )
         self.projectWindow.window.set_display_title("Project properties")
         project.blocking = True
-
-
-        
+     
     def handleEvents(self, event, project, rootSize):
         self.saveButton.handleEvents(event, project)
         self.projectButton.handleEvents(event, project, rootSize)
@@ -207,9 +205,23 @@ class Toppanel:
             for button in [self.createBlockButton, self.createTopBlockButton, self.createBottomBlockButton, self.createLeftBlockButton, self.createRightBlockButton]:
                 button.hide()
 
+    def drawFront(self, surface, project):
+        if project.getSelected():
+            pR = self.Panel.get_abs_rect()
+            pygame.draw.rect(
+                surface, 
+                (100,100,100), 
+                pygame.Rect(
+                    pR.left+ 25,
+                    pR.top + 38,
+                    pR.width-50,
+                    150
+                ),
+                2
+            )
 
 class Bottompanel:
-    def __init__(self, manager, rootSize):        
+    def __init__(self, manager, rootSize, project):        
         self.Panel = pygame_gui.elements.UIPanel(
             pygame.Rect(0, rootSize[1]*0.5, min(rootSize[0]*.2, 450), rootSize[1]*0.5),
             manager=manager,
@@ -227,6 +239,55 @@ class Bottompanel:
             manager=manager
         )
 
+        self.areaText = pygame_gui.elements.UILabel(
+            pygame.Rect(
+                10,92,
+                int(self.Panel.get_container().get_rect().width*.3),
+                20
+            ),
+            text = "Area:     ",
+            container=self.Panel.get_container(),
+            manager=manager
+        )
+
+        self.areaDropdown = pygame_gui.elements.UIDropDownMenu(
+            relative_rect=pygame.Rect(
+                int(self.Panel.get_container().get_rect().width*.2),
+                90,
+                int(self.Panel.get_container().get_rect().width*.6),
+                25
+            ),
+            options_list=["queen's garden", "deepnest", "greenpath", "kingdom's edge"],
+            starting_option="queen's garden",
+            container=self.Panel.get_container(),
+            manager=manager
+        )
+
+        self.colorText = pygame_gui.elements.UILabel(
+            pygame.Rect(
+                10,50,
+                int(self.Panel.get_container().get_rect().width*.3),
+                20
+            ),
+            text = "Color:    ",
+            container=self.Panel.get_container(),
+            manager=manager
+        )
+
+        self.colorButton = uiButtons.AreaColorButton(
+            pos=pygame.Vector2(
+                self.Panel.get_container().get_rect().left - 2 + int(self.Panel.get_container().get_rect().width*.5),
+                self.Panel.get_container().get_rect().top + 50
+            ),
+            size=pygame.Vector2(self.Panel.get_container().get_rect().width*.3, 20),
+            project=project
+        )
+
+    def handleEvents(self, event, project, rootSize):
+        self.colorButton.handleEvents(event, project, rootSize)
+
+    def drawFront(self, surface, project):
+        self.colorButton.draw(surface, project)
 
 class ProjectWindow:
     def __init__(self, rootSize, manager, project) -> None:

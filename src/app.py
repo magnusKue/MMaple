@@ -41,7 +41,7 @@ class App:
 
                 if event.type == pygame.KEYDOWN:				
                     if event.key == K_ESCAPE:
-                        running = False
+                        self.running = False
                 if event.type == pygame.VIDEORESIZE:
                     width,height = event.size
                     width = max(1000, width)
