@@ -14,8 +14,8 @@ class Camera:
             mousePos = (pygame.mouse.get_pos() - self.parent.camera.offset)/self.zoom
             bS = self.parent.mapWindow.getBlockSize(rootSize, project)
 
-            if mousePos.x > 0 and mousePos.x < len(project.map[0]) * bS.x:
-                if (mousePos.y > 0 and mousePos.y < len(project.map[1]) * bS.y) or (self.parent.mapWindow.hoveredBlock != pygame.Vector2(-1,-1)):
+            if mousePos.x > 0 and mousePos.x < (len(project.map[0])) * bS.x:
+                if (mousePos.y > 0 and mousePos.y < (len(project.map)) * bS.y) or (self.parent.mapWindow.hoveredBlock != pygame.Vector2(-1,-1)):
                     self.parent.mapWindow.recalcSurf(project, rootSize)
             elif self.parent.mapWindow.hoveredBlock != pygame.Vector2(-1,-1):
                 self.parent.mapWindow.recalcSurf(project, rootSize)
@@ -80,8 +80,8 @@ class MapWindow:
     def recalcSurf(self, project, rootSize):
         bS = self.getBlockSize(rootSize, project) # blocksize
         bounds = pygame.Vector2(
-            len(project.map)*bS.x,
-            len(project.map)*bS.y
+            (len(project.map[0]))*bS.x,
+            (len(project.map))*bS.y
         )
         tempSurf =  pygame.Surface(bounds, pygame.SRCALPHA, 32).convert_alpha()
         

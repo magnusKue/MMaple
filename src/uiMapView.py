@@ -13,7 +13,7 @@ class MapView:
 
         self.optionsPanel = uiMapView_Sidepanel.OptionPanel(self.manager, rootSize, self, project)
         self.topPanel = uiMapView_Sidepanel.Toppanel(self.manager, rootSize, self)
-        self.bottomPanel = uiMapView_Sidepanel.Bottompanel(self.manager, rootSize, project)
+        self.bottomPanel = uiMapView_Sidepanel.Bottompanel(self.manager, rootSize, project, self)
         self.toolPanel = uiMapView_Sidepanel.ToolPanel(self.manager, rootSize, self)
 
 
@@ -48,4 +48,4 @@ class MapView:
         self.mapWindow.handleEvents(event, project, rootSize)
         self.optionsPanel.handleEvents(event, project, rootSize)
         self.topPanel.handleEvents(event, project, rootSize)
-        self.bottomPanel.handleEvents(event, project, rootSize, self.mapWindow)
+        self.bottomPanel.handleEvents(event, project, rootSize)

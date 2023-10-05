@@ -289,10 +289,14 @@ class StartView:
         
         for element in [self.mapSizeXInput, self.mapSizeXInput]:
             if not element.get_text():
-                self.errors["mapsize"] = True        
+                self.errors["mapsize"] = True
+            elif int(element.get_text()) == 0:        
+                self.errors["mapsize"] = True
         
         for element in [self.roomSizeXInput, self.roomSizeYInput]:
             if not element.get_text():
+                self.errors["roomsize"] = True
+            elif int(element.get_text()) == 0:        
                 self.errors["roomsize"] = True     
             
         if not self.nameInput.get_text():

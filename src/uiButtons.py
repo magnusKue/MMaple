@@ -30,7 +30,8 @@ class Button:
     def draw(self, surface:pygame.Surface, project):
         pygame.draw.rect(surface, (60,60,60), pygame.Rect(self.pos, self.size))
         pygame.draw.rect(surface, (100,100,100), pygame.Rect(self.pos, self.size), 1)
-        surface.blit(self.image, pygame.Rect((self.pos.x+self.margin, self.pos.y+self.margin), self.size))
+        if self.image:
+            surface.blit(self.image, pygame.Rect((self.pos.x+self.margin, self.pos.y+self.margin), self.size))
         if self.hovered and not project.blocking:
             transparency = pygame.Surface(self.size, pygame.SRCALPHA, 32)
             transparency.fill((255,255,255,30))
@@ -118,7 +119,7 @@ class Project_Button(Button):
         self.projectStamp = project
         self.rootSizeStamp = rootSize
 
-class AreaColorButton(ColorButton):
+class RoomColorButton(ColorButton):
     def __init__(self, pos, size, project, color=(255, 0, 0)) -> None:
         super().__init__(pos, size, color)
         if project.selectedBlock != pygame.Vector2(-1,-1):
@@ -146,4 +147,14 @@ class AreaColorButton(ColorButton):
                 project.rooms[project.getSelected().room].color = choosenColor
             mapWindow.recalcSurf(project, rootSize)
         
-        
+class areaEditButton(Button):
+    def __init__(self, pos, size, parent):
+        super().__init__(pos, size)
+        self.loadIcon("assets\edit.png")
+        parent = parent
+
+    def clicked(self):
+        self.parent.initAreaWindow(
+            manager=self.parent.parent.manager,
+            rootSize=self.rootSizeStamp
+        )

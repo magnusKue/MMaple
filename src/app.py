@@ -15,7 +15,7 @@ class App:
         print(f"successes: {success}\nfailures: {failures}")
 
         self.project = Project()
-        self.project.mode = MAPVIEW
+        self.project.mode = MAPVIEW	
 
         self.clock = pygame.time.Clock()
 
@@ -28,8 +28,6 @@ class App:
 
         root = tk.Tk()
         root.withdraw() # for file dialoge only
-        
-        
 
     def run(self):
         while self.running:
