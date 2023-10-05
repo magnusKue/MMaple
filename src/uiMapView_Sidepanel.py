@@ -13,6 +13,19 @@ class ToolPanel:
             container=manager.get_root_container()
         )
 
+        self.toolSwapButton = pygame_gui.elements.UIButton(
+            relative_rect= pygame.Rect(5,5,40,40),
+            manager=manager,
+            container=self.Panel.get_container(),
+            text="",
+            object_id=pygame_gui.core.ObjectID(object_id="#toolSwapButton")
+        )
+    
+    def handleEvents(self, event, project, rootSize):
+        if event.type == pygame_gui.UI_BUTTON_PRESSED:
+            if event.ui_element == self.toolSwapButton:
+                print("swapedy swap swap")
+
 class OptionPanel:
     def __init__(self, manager, rootSize, parent, project): 
         self.parent = parent       
@@ -40,6 +53,7 @@ class OptionPanel:
             manager=manager,
             project=project
         )
+        self.projectWindow.draggable = False
         self.projectWindow.window.hide()
 
     def initProjectWindow(self, manager, project, rootSize):
@@ -49,6 +63,7 @@ class OptionPanel:
             project=project
         )
         self.projectWindow.window.set_display_title("Project properties")
+        self.projectWindow.window.draggable = False
         project.blocking = True
      
     def handleEvents(self, event, project, rootSize):
@@ -298,10 +313,12 @@ class Bottompanel:
 
         self.areaWindow = AreaWindow(manager, rootSize)
         self.areaWindow.window.set_blocking(True)
+        self.areaWindow.window.hide()
 
     def handleEvents(self, event, project, rootSize, mapWindow):
         self.colorButton.handleEvents(event, project, rootSize, mapWindow)
-        self.areaEditButton.handleEvents(event, project)
+        self.areaEditButton.handleEvents(event, project, rootSize, mapWindow)
+
         if event.type == pygame_gui.UI_WINDOW_CLOSE:
             if event.ui_element == self.areaWindow:
                 project.blocking = False
@@ -313,9 +330,7 @@ class Bottompanel:
     def initAreaWindow(self, manager, rootSize):
         self.areaWindow = AreaWindow(manager, rootSize)
         self.areaWindow.window.set_blocking(True)
-
-    def handleEvents(self, event, project, rootSize):
-        pass
+        self.areaWindow.window.draggable = False
 
 class ProjectWindow:
     def __init__(self, rootSize, manager, project) -> None:
@@ -329,8 +344,8 @@ class ProjectWindow:
         windowSize = pygame.Vector2(300,len(values)* 25 + 100)
         self.window = pygame_gui.elements.UIWindow(
             rect=pygame.Rect(
-                (rootSize[0]*0.5) - 250,
-                (rootSize[1]*0.5) - 250,
+                (rootSize[0]*0.5) - (.5*windowSize.x),
+                (rootSize[1]*0.5) - (.5*windowSize.y),
                 windowSize.x,
                 windowSize.y
             ),
@@ -378,13 +393,4 @@ class AreaWindow:
             container=wC,
             manager=manager
         )
-        #self.items = []
-        #for index, valuePair in enumerate(values.items()):
-        #    self.items.append(
-        #        pygame_gui.elements.UILabel(
-        #            pygame.Rect(5,35 + index * 25, wC.get_rect().w-10, 25),
-        #            text=f"{valuePair[0]} {valuePair[1]}",
-        #            container=wC,
-        #            manager=manager
-        #        )
-        #    )
+

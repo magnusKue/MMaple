@@ -21,9 +21,6 @@ class App:
 
         self.window = Window([1500,800])
 
-        infoObject = pygame.display.Info()
-        rootSize = (infoObject.current_w, infoObject.current_h)
-
         self.ui = UI(self.window.rootSize, self.project)
 
         root = tk.Tk()

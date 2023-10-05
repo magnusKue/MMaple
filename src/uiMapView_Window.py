@@ -6,7 +6,7 @@ class Camera:
         self.zoom = 1
         self.parent = parent
 
-    def handleEvents(self, event, rootSize, project):
+    def handleEvents(self, event, project, rootSize):
         if event.type == pygame.MOUSEMOTION:
             if pygame.mouse.get_pressed(3)[1] and not project.blocking:
                 self.offset += pygame.Vector2(event.rel[0], event.rel[1])

@@ -36,6 +36,7 @@ class Project:
         self.selectedBlock = pygame.Vector2(-1,-1)
         self.blocking = False
         self.mode = definitions.MAPVIEW
+        self.themePath = "src\\theme.json"
     
     def getSelected(self):
         return self.map[int(self.selectedBlock.y)][int(self.selectedBlock.x)]

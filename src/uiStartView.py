@@ -9,7 +9,7 @@ import definitions
         
 class StartView:
     def __init__(self, rootSize, project, initVals):
-        self.manager = pygame_gui.UIManager(rootSize)
+        self.manager = pygame_gui.UIManager(rootSize, project.themePath)
 
         self.maxNumber = 2
         self.maxNameLen = 20
@@ -239,6 +239,7 @@ class StartView:
             manager=self.manager
         )
         self.errorWindow.set_blocking(True)
+        self.errorWindow.window.draggable = False
         self.errorWindow.set_display_title("Creation failed!!")
 
         wC = self.errorWindow.get_container() # window container

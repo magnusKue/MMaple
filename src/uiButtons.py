@@ -136,9 +136,9 @@ class RoomColorButton(ColorButton):
             if project.getSelected():
                 self.color = project.rooms[project.getSelected().room].color
             else:
-                self.color = (100,100,100)
+                self.color = (150,50,50)
         else:
-            self.color = (80,80,80)    
+            self.color = (150,50,50)    
     
     def clicked(self, project, mapWindow, rootSize):
         if project.getSelected():
@@ -151,10 +151,18 @@ class areaEditButton(Button):
     def __init__(self, pos, size, parent):
         super().__init__(pos, size)
         self.loadIcon("assets\edit.png")
-        parent = parent
+        self.parent = parent
+        self.rootSizeStamp = None
+        self.projectStamp = None
 
     def clicked(self):
         self.parent.initAreaWindow(
             manager=self.parent.parent.manager,
             rootSize=self.rootSizeStamp
         )
+        self.projectStamp.blocking = True
+
+    def handleEvents(self, event, project, rootSize, mapWindow):
+        super().handleEvents(event, project) 
+        self.rootSizeStamp = rootSize
+        self.projectStamp = project
