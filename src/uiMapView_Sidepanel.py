@@ -279,16 +279,12 @@ class Bottompanel:
             manager=manager
         )
 
-        rect = pygame.Rect(
-            self.Panel.get_container().get_rect().left + int(self.Panel.get_container().get_rect().width*.8) + 5,
-            91  + self.Panel.get_container().get_rect().top,
-            22,
-            22
-        )
-        self.areaEditButton = uiButtons.areaEditButton(
-            pos = pygame.Vector2(rect.topleft),
-            size = pygame.Vector2(rect.w, rect.h),
-            parent = self
+        self.areaEditButton = pygame_gui.elements.UIButton(
+            relative_rect=pygame.Rect(int(self.Panel.get_container().get_rect().width*.8) + 5,90,25,25),
+            text="",
+            manager=manager,
+            container=self.Panel.get_container(),
+            object_id=pygame_gui.core.ObjectID(object_id="#areaEditButton")
         )
 
         self.colorText = pygame_gui.elements.UILabel(
@@ -317,15 +313,18 @@ class Bottompanel:
 
     def handleEvents(self, event, project, rootSize, mapWindow):
         self.colorButton.handleEvents(event, project, rootSize, mapWindow)
-        self.areaEditButton.handleEvents(event, project, rootSize, mapWindow)
 
         if event.type == pygame_gui.UI_WINDOW_CLOSE:
             if event.ui_element == self.areaWindow:
                 project.blocking = False
+                
+        elif event.type == pygame_gui.UI_BUTTON_PRESSED:
+            if event.ui_element == self.areaEditButton:
+                self.initAreaWindow(manager=self.parent.manager, rootSize=rootSize)
+                project.blocking = True
 
     def drawFront(self, surface, project):
         self.colorButton.draw(surface, project)
-        self.areaEditButton.draw(surface, project)   
 
     def initAreaWindow(self, manager, rootSize):
         self.areaWindow = AreaWindow(manager, rootSize)

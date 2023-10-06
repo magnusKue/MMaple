@@ -46,5 +46,22 @@
                 "path":"assets\\expandTool.png"
             }
         }
+    },
+
+    "#areaEditButton":
+    {
+        "misc":
+        {
+            "shape":"rounded_rectangle",
+            "shape_corner_radius":"2"
+        },
+
+        "images":
+        {
+            "normal_image": 
+            {
+                "path":"assets\\edit.png"
+            }
+        }
     }
 }

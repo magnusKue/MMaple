@@ -79,20 +79,6 @@ class ColorButton:
     def clicked(self, project, mapWindow, rootSize):
         pass
 
-class ToolSwap_Button(Button):
-    def __init__(self, pos, size) -> None:
-        super().__init__(pos, size)
-        self.mode = definitions.EXPANDTOOL
-        self.loadIcon("assets\expandTool.png")
-
-    def clicked(self):
-        if self.mode == definitions.MOVETOOL:
-            self.mode = definitions.EXPANDTOOL
-            self.loadIcon("assets\expandTool.png")
-        elif self.mode == definitions.EXPANDTOOL:
-            self.mode = definitions.MOVETOOL
-            self.loadIcon("assets\cursor.png")
-
 class Save_Button(Button):
     def __init__(self, pos, size):
         super().__init__(pos, size)
