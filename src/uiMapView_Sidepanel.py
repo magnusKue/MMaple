@@ -35,18 +35,22 @@ class OptionPanel:
             container=manager.get_root_container()
         )
 
-        self.saveButton = uiButtons.Save_Button(
-            pos  = pygame.Vector2(5,5), 
-            size = pygame.Vector2(40, 40)
+        self.saveButton = pygame_gui.elements.UIButton(
+            relative_rect=pygame.Rect(0,0,self.Panel.get_abs_rect().h-6,self.Panel.get_abs_rect().h-6),
+            text="",
+            manager = self.parent.manager,
+            container = self.Panel.get_container(),
+            object_id=pygame_gui.core.ObjectID(object_id="#saveButton")
         )
-        self.saveButton.loadIcon("assets/save.png")
 
-        self.projectButton = uiButtons.Project_Button(
-            pos  = pygame.Vector2(50,5), 
-            size = pygame.Vector2(40, 40),
-            parent= self
+
+        self.projectButton = pygame_gui.elements.UIButton(
+            relative_rect=pygame.Rect(self.Panel.get_abs_rect().h-6,0,self.Panel.get_abs_rect().h-6,self.Panel.get_abs_rect().h-6),
+            text="",
+            manager = self.parent.manager,
+            container = self.Panel.get_container(),
+            object_id=pygame_gui.core.ObjectID(object_id="#projectButton")
         )
-        self.projectButton.loadIcon("assets/save.png")
 
         self.projectWindow = ProjectWindow(
             rootSize=rootSize,
@@ -67,15 +71,13 @@ class OptionPanel:
         project.blocking = True
      
     def handleEvents(self, event, project, rootSize):
-        self.saveButton.handleEvents(event, project)
-        self.projectButton.handleEvents(event, project, rootSize)
-
         if event.type == pygame_gui.UI_WINDOW_CLOSE:
             project.blocking = False
-
-    def draw(self, surface, project):
-        self.saveButton.draw(surface, project)
-        self.projectButton.draw(surface, project)
+        elif event.type == pygame_gui.UI_BUTTON_PRESSED:
+            if event.ui_element == self.projectButton:
+                self.initProjectWindow(self.parent.manager, project, rootSize)
+            elif event.ui_element == self.saveButton:
+                print("this is the part where it's supposed to save")
 
 class Toppanel:
     def __init__(self, manager, rootSize, parent): 
@@ -161,14 +163,11 @@ class Toppanel:
 
     def handleEvents(self, event, project, rootSize):
         if event.type == pygame_gui.UI_BUTTON_PRESSED:
-            if event.ui_element == self.createBlockButton:
-                self.createBlock(project)
-                self.parent.mapWindow.recalcSurf(project, rootSize)
-            
-            if event.ui_element == self.createBottomBlockButton: self.copyBlock(project, 0, 1);self.parent.mapWindow.recalcSurf(project, rootSize)
-            if event.ui_element == self.createTopBlockButton:    self.copyBlock(project, 0, -1);self.parent.mapWindow.recalcSurf(project, rootSize)
-            if event.ui_element == self.createLeftBlockButton:   self.copyBlock(project, -1, 0);self.parent.mapWindow.recalcSurf(project, rootSize)
-            if event.ui_element == self.createRightBlockButton:  self.copyBlock(project, 1, 0);self.parent.mapWindow.recalcSurf(project, rootSize)
+            if   event.ui_element == self.createBlockButton:       self.createBlock(project);       self.parent.mapWindow.recalcSurf(project, rootSize)  
+            elif event.ui_element == self.createBottomBlockButton: self.copyBlock(project, 0, 1);   self.parent.mapWindow.recalcSurf(project, rootSize)
+            elif event.ui_element == self.createTopBlockButton:    self.copyBlock(project, 0, -1);  self.parent.mapWindow.recalcSurf(project, rootSize)
+            elif event.ui_element == self.createLeftBlockButton:   self.copyBlock(project, -1, 0);  self.parent.mapWindow.recalcSurf(project, rootSize)
+            elif event.ui_element == self.createRightBlockButton:  self.copyBlock(project, 1, 0);   self.parent.mapWindow.recalcSurf(project, rootSize)
 
     def copyBlock(self, project, x,y):
         if x==-1 and int(project.selectedBlock.x) == 0: return

@@ -22,13 +22,12 @@ class MapView:
         
 
     def drawFront(self, surface, project, rootSize):
-        self.optionsPanel.draw(surface, project)
         self.topPanel.drawFront(surface, project)
         self.bottomPanel.drawFront(surface, project)
 
     def draw(self, surface, project, rootSize):
-        surface.blit(self.mapWindow.getSurface(), (self.camera.offset.x, self.camera.offset.y))
         self.topPanel.draw(surface, project)
+        surface.blit(self.mapWindow.getSurface(), (self.camera.offset.x, self.camera.offset.y))
     
     def handleEvents(self, event, rootSize, project):
         for panel in [self.camera, self.mapWindow, self.optionsPanel, self.topPanel, self.toolPanel]:

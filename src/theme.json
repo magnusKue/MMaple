@@ -63,5 +63,27 @@
                 "path":"assets\\edit.png"
             }
         }
+    },
+
+    "#projectButton":
+    {
+        "images":
+        {
+            "normal_image": 
+            {
+                "path":"assets\\projectEdit.png"
+            }
+        }
+    },
+
+    "#saveButton":
+    {
+        "images":
+        {
+            "normal_image": 
+            {
+                "path":"assets\\save.png"
+            }
+        }
     }
 }
